@@ -20,13 +20,13 @@ This ensures the playbooks are always accurate, and will work against fresh serv
 * Enable ansible pipelining and persistent SSH connection.
 * Ruby-specific
   * Serve precompiled rubies on the host with nginx, and configure mise to install from there using `ruby.precompiled_url`.
-  * Optionally configure `bundler` to store compiled gems in `/data`, a volume that is persisted. This reduces reproducability slightly, consider making this an optional optimization.
+  * Configure `bundler` to store compiled gems in `/data`, a volume that is persisted. This reduces reproducibility slightly, consider making this an optional optimization.
 
 # Usage
 
 * Copy boilerplate
 * Run `lxc-scripts/init-host.sh` to configure LXD, nginx, apt-cacher-ng. This permanently modifies your system, I recommend doing this in a (real) VM for isolation.
-* `/rebuild.sh`
+* `./rebuild.sh`
 
 # Demo
 
@@ -41,6 +41,48 @@ For testing, `rebuild.sh` does the following:
 First run:
 
 ```
+$ time ./rebuild.sh
+Doing full rebuild. Alternatively you can run:
+  Skip lxc provisioning: ./rebuild.sh fast
+  Skip lxc provisioning and pass args to ansible: ./rebuild.sh fast -t caddy --check --diff
+
+Storage volume caddy-data created
+Creating caddy
+Starting caddy
+Device data added to caddy
+Pushing SSH key
+Setting up apt to use caching proxy
+Set up eatmydata for apt installs
+Disabling man-db updates during apt installs
+Not building database; man-db/auto-update is not 'true'.
+man-db.service is a disabled or a static unit not running, not starting it.
+Doing apt-get update before snapshotting to speed up future runs
+Making base snapshot
+Verifying ssh is reachable
+caddy is up at 10.225.118.112
+Writing inventory to /tmp/tmp.izLaNwOWvA
+Running: ansible-playbook -i /tmp/tmp.izLaNwOWvA caddy.yml
+
+PLAY [Install Caddy] *************************************************************************************************************************************
+
+TASK [Gathering Facts] ***********************************************************************************************************************************
+ok: [10.225.118.112]
+
+TASK [Install Caddy] *************************************************************************************************************************************
+changed: [10.225.118.112]
+
+TASK [Deploy Caddyfile] **********************************************************************************************************************************
+changed: [10.225.118.112]
+
+RUNNING HANDLER [Reload Caddy] ***************************************************************************************************************************
+changed: [10.225.118.112]
+
+PLAY RECAP ***********************************************************************************************************************************************
+10.225.118.112             : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+Testing if https://caddy.local responds with 'success!' as configured
+Tests passed!
+
 real	0m30.449s
 user	0m1.048s
 sys	0m2.215s
@@ -49,15 +91,70 @@ sys	0m2.215s
 Subsequent runs revert to snapshot of fresh install rather than launching a new system container:
 
 ```
+$ time ./rebuild.sh
+Doing full rebuild. Alternatively you can run:
+  Skip lxc provisioning: ./rebuild.sh fast
+  Skip lxc provisioning and pass args to ansible: ./rebuild.sh fast -t caddy --check --diff
+
+caddy already exists. Restoring to base snapshot and starting
+Verifying ssh is reachable
+caddy is up at 10.225.118.112
+Writing inventory to /tmp/tmp.NgC7O1tW3z
+Running: ansible-playbook -i /tmp/tmp.NgC7O1tW3z caddy.yml
+
+PLAY [Install Caddy] *************************************************************************************************************************************
+
+TASK [Gathering Facts] ***********************************************************************************************************************************
+ok: [10.225.118.112]
+
+TASK [Install Caddy] *************************************************************************************************************************************
+changed: [10.225.118.112]
+
+TASK [Deploy Caddyfile] **********************************************************************************************************************************
+changed: [10.225.118.112]
+
+RUNNING HANDLER [Reload Caddy] ***************************************************************************************************************************
+changed: [10.225.118.112]
+
+PLAY RECAP ***********************************************************************************************************************************************
+10.225.118.112             : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+Testing if https://caddy.local responds with 'success!' as configured
+Tests passed!
+
 real	0m11.664s
 user	0m0.789s
 sys	0m0.925s
 ```
 
-When you're iterating and don't need full reproducability, run `rebuild.sh fast` to skip reverting to a snapshot. It just re-runs the ansible playbook and does the `curl` based test again:
+When you're iterating and don't need full reproducibility, run `rebuild.sh fast` to skip reverting to a snapshot. It just re-runs the ansible playbook and does the `curl` based test again:
 
 ```
+$ time ./rebuild.sh fast
+Fast mode - skipping lxc reprovisioning step!
+Writing inventory to /tmp/tmp.I5sJO1BABc
+Running: ansible-playbook -i /tmp/tmp.I5sJO1BABc caddy.yml
+
+PLAY [Install Caddy] *************************************************************************************************************************************
+
+TASK [Gathering Facts] ***********************************************************************************************************************************
+ok: [10.225.118.112]
+
+TASK [Install Caddy] *************************************************************************************************************************************
+ok: [10.225.118.112]
+
+TASK [Deploy Caddyfile] **********************************************************************************************************************************
+ok: [10.225.118.112]
+
+PLAY RECAP ***********************************************************************************************************************************************
+10.225.118.112             : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+Testing if https://caddy.local responds with 'success!' as configured
+Tests passed!
+
 real	0m2.539s
 user	0m0.561s
 sys	0m0.175s
 ```
+
+
