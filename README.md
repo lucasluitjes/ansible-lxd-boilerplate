@@ -34,7 +34,7 @@ This ensures the playbooks are always accurate, and will work against fresh serv
 # Usage
 
 * Copy boilerplate.
-* Run `lxc-scripts/init-host.sh` to configure LXD, nginx, apt-cacher-ng. This permanently modifies your system, I recommend doing this in a (real) VM for isolation.
+* Run `lxc-scripts/init-host.sh` on Ubuntu 24.04 to configure LXD, nginx, apt-cacher-ng. This permanently modifies your system, I recommend doing this in a (real) VM for isolation.
 * `./rebuild.sh`
 
 # Demo
