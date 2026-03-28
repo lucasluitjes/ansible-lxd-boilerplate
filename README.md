@@ -27,13 +27,13 @@ This ensures the playbooks are always accurate, and will work against fresh serv
   * Configure apt in system containers to use `eatmydata`.
   * Disable updating man-db in system-containers.
 * Enable ansible pipelining and persistent SSH connection.
-* Ruby-specific
+* Ruby-specific (not part of the demo script):
   * Serve precompiled rubies on the host with nginx, and configure mise to install from there using `ruby.precompiled_url`.
-  * Configure `bundler` to store compiled gems in `/data`, a volume that is persisted. This reduces reproducibility slightly, consider making this an optional optimization.
+  * Configure `bundler` to store compiled gems in `/data`, a volume that is persisted. (This reduces reproducibility slightly, consider making this optional.)
 
 # Usage
 
-* Copy boilerplate
+* Copy boilerplate.
 * Run `lxc-scripts/init-host.sh` to configure LXD, nginx, apt-cacher-ng. This permanently modifies your system, I recommend doing this in a (real) VM for isolation.
 * `./rebuild.sh`
 
@@ -165,5 +165,3 @@ real	0m2.539s
 user	0m0.561s
 sys	0m0.175s
 ```
-
-
