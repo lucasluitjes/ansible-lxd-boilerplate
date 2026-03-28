@@ -2,6 +2,15 @@
 
 Setup for building and testing ansible playbooks against Ubuntu systems *fast*.
 
+`rebuild.sh` makes a fresh Ubuntu installation, runs ansible playbook to install Caddy and configure it, and `curl`'s Caddy:
+
+```
+$ time ./rebuild.sh
+real	0m11.664s
+user	0m0.789s
+sys	0m0.925s
+```
+
 # Why?
 
 The workflow I like for building reliable ansible playbooks: make freshly installed VMs, run an ansible playbook against them to install dependencies and configure applications, run automated tests against those VMs, and delete the VMs. For every change.
