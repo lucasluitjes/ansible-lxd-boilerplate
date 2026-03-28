@@ -14,9 +14,9 @@ This ensures the playbooks are always accurate, and will work against fresh serv
 * Configure LXD to use ZFS storage pool.
 * Make snapshot of system container after creating it, and revert to snapshot on subsequent runs.
 * Speeding up `apt install`
-        * Run apt-cacher-ng on the host, and configure apt on system containers to use it.
-        * Configure apt in system containers to use `eatmydata`.
-        * Disable updating man-db in system-containers.
+  * Run apt-cacher-ng on the host, and configure apt on system containers to use it.
+  * Configure apt in system containers to use `eatmydata`.
+  * Disable updating man-db in system-containers.
 * Enable ansible pipelining and persistent SSH connection.
 * Ruby-specific
   * Serve precompiled rubies on the host with nginx, and configure mise to install from there using `ruby.precompiled_url`.
