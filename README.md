@@ -22,7 +22,7 @@ This ensures the playbooks are always accurate, and will work against fresh serv
 * Use LXD system containers rather than full VMs.
 * Configure LXD to use ZFS storage pool.
 * Make snapshot of system container after creating it, and revert to snapshot on subsequent runs.
-* Speeding up `apt install`
+* Speeding up `apt install`:
   * Run apt-cacher-ng on the host, and configure apt on system containers to use it.
   * Configure apt in system containers to use `eatmydata`.
   * Disable updating man-db in system-containers.
