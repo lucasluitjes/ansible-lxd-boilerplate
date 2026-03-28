@@ -2,7 +2,7 @@
 
 Setup for building and testing ansible playbooks against Ubuntu systems *fast*.
 
-`rebuild.sh` makes a fresh Ubuntu installation, runs ansible playbook to install Caddy and configure it, and `curl`'s Caddy:
+`rebuild.sh` makes a fresh Ubuntu installation, runs an ansible playbook to install Caddy and configure it, and uses `curl` to verify that Caddy is running correctly.
 
 ```
 $ time ./rebuild.sh
