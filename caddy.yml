@@ -1,0 +1,27 @@
+- name: Install Caddy
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install Caddy
+      apt:
+        name: caddy
+        state: present
+        update_cache: true
+
+    - name: Deploy Caddyfile
+      copy:
+        dest: /etc/caddy/Caddyfile
+        content: |
+          caddy.local {
+            respond "success!"
+          }
+        mode: "0644"
+      notify: Reload Caddy
+
+  handlers:
+    - name: Reload Caddy
+      systemd:
+        name: caddy
+        state: reloaded
+        enabled: true
