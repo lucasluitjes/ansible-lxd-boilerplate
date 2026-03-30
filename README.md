@@ -2,7 +2,7 @@
 
 Setup for building and testing ansible playbooks against Ubuntu systems *fast*.
 
-TLDR: the `rebuild.sh` demo script makes a fresh Ubuntu installation, runs an ansible playbook to install Caddy and configures it, and uses `curl` to verify that Caddy is running correctly.
+TLDR: the `rebuild.sh` demo script makes a fresh Ubuntu installation, runs an ansible playbook to install Caddy and configure it, and uses `curl` to verify that Caddy is running correctly.
 
 ```
 $ time ./rebuild.sh
