@@ -13,9 +13,9 @@ sys	0m0.925s
 
 # Why?
 
-The workflow I like for building reliable ansible playbooks: make freshly installed VMs, run an ansible playbook against them to install dependencies and configure applications, run automated tests against those VMs, and delete the VMs. For every change.
+The workflow I like for building reliable ansible playbooks: make freshly installed VMs, run an ansible playbook against them to install dependencies and configure applications, run automated tests against those VMs, and delete the VMs. Ideally for every change.
 
-This ensures the playbooks are always accurate, and will work against fresh servers. But out of the box it's pretty slow.
+This ensures the playbooks are accurate, and will work against fresh servers. But out of the box it's pretty slow.
 
 # How?
 
